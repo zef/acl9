@@ -9,6 +9,7 @@ end
 
 if defined? ActionController::Base
   require File.join(File.dirname(__FILE__), 'acl9', 'controller_extensions')
+  require File.join(File.dirname(__FILE__), 'acl9', 'registry')
   require File.join(File.dirname(__FILE__), 'acl9', 'helpers')
 
   ActionController::Base.send(:include, Acl9::ControllerExtensions)

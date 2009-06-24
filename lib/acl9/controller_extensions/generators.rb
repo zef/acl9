@@ -83,6 +83,28 @@ module Acl9
         end
       end
 
+      ################################################################
+
+      class GenericLambda < BaseGenerator
+        def to_proc
+          code = <<-RUBY
+            lambda do |subject, action_name, options|
+              #{allowance_expression}
+            end
+          RUBY
+
+          self.instance_eval(code, __FILE__, __LINE__)
+        rescue SyntaxError
+          raise FilterSyntaxError, code
+        end
+
+        def _subject_ref;        "subject"               end
+        def _object_ref(object); "(options[:#{object}])" end
+        def _action_ref;         "action_name"           end
+      end
+
+      ################################################################
+
       class FilterLambda < BaseGenerator
         def initialize(subject_method)
           super

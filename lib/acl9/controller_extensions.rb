@@ -59,6 +59,19 @@ module Acl9
         generator.acl_block!(&block)
 
         generator.install_on(self, opts)
+
+        registry = case opts[:register]
+                   when nil, true
+                     Acl9::default_registry
+                   when Acl9::Registry
+                     opts[:register]
+                   when false
+                     nil
+                   else
+                     raise ArgumentError, "opts[:register] must be true, false, nil or Acl9::Registry instance"
+                   end
+
+        registry.entry!(self.to_s.underscore, &block) if registry
       end
     end
   end
