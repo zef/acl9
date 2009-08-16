@@ -15,7 +15,8 @@ module Acl9
           self.role_objects.member?(get_role(role_name, nil))
         else
           role = get_role(role_name, object)
-          role && self.role_objects.exists?(role.id)
+          has_active_record_association = object.send(role_name) == self if object.respond_to?(role_name)
+          (role && self.roles.exists?(role.id)) || has_active_record_association
         end
       end
 
